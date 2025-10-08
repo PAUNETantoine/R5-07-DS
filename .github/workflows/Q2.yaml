@@ -27,13 +27,3 @@ jobs:
       - name: Create archive
         run: |
           zip Q2_archive_TOTO.txt.zip info.txt
-
-      - name: Commit et Push du .zip
-        run: |
-          git config --global user.name PAUNETantoine
-          git config user.email paunet.antoine@gmail.com
-
-          git pull
-          git add Q2_archive_TOTO.txt.zip
-          git commit -m "Ajout automatique de l’archive info.txt"
-          git push

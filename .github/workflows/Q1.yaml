@@ -27,6 +27,7 @@ jobs:
           git config --global user.name PAUNETantoine
           git config user.email paunet.antoine@gmail.com
 
+          git pull
           git add Q1_archive_TOTO.txt.zip
           git commit -m "Ajout automatique de l’archive TOTO.txt"
           git push
