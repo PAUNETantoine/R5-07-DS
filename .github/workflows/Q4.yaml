@@ -1,0 +1,36 @@
+name: Q4
+
+on:
+  push:
+    branches:
+      - main
+permissions:
+    contents: write
+
+jobs:
+  archive-java:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Récuperer la date
+        id: date
+        run: echo "date=$(date +'%d-%m-%Y')" >> $GITHUB_OUTPUT
+
+      - name: Create Q4_archive_date.txt
+        run: |
+          NOMFICHIER="Q4_archive_${{ steps.date.outputs.date }}.txt"
+          echo "Antoine Paunet" > $NOMFICHIER
+          echo "" >> $NOMFICHIER
+          cat Q4.java >> $NOMFICHIER
+
+      - name: Commit et Push du .txt
+        run: |
+          git config --global user.name PAUNETantoine
+          git config user.email paunet.antoine@gmail.com
+
+          git pull
+          git add Q4_archive_java.txt
+          git commit -m "Ajout automatique de l’archive java"
+          git push
