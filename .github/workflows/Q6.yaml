@@ -53,6 +53,6 @@ jobs:
           git config --global user.name PAUNETantoine
           git config user.email paunet.antoine@gmail.com
           git pull
-          git add $NOMFICHIER
+          git add $NOMFICHIER Q6_différences.txt
           git commit -m "Ajout Q6_archive et Q6_différences"
           git push
