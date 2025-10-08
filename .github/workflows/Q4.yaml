@@ -27,10 +27,11 @@ jobs:
 
       - name: Commit et Push du .txt
         run: |
+          NOMFICHIER="Q4_archive_${{ steps.date.outputs.date }}.txt"
           git config --global user.name PAUNETantoine
           git config user.email paunet.antoine@gmail.com
 
           git pull
-          git add Q4_archive_java.txt
+          git add $NOMFICHIER
           git commit -m "Ajout automatique de l’archive java"
           git push
