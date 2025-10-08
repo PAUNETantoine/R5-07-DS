@@ -1,7 +1,7 @@
 public class Q3 {
     public static void main(String[] args) {
         if (args.length != 1) {
-            System.out.println("Usage: java Q3 <N>");
+            System.out.println("Usage: java Q3 'nombre'");
             return;
         }
         try {
