@@ -1,0 +1,36 @@
+name: Q5
+
+on:
+  push:
+    branches:
+      - main
+permissions:
+    contents: write
+
+jobs:
+  archive-java-Q5:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Récupérer la date
+        id: date
+        run: echo "date=$(date +'%d-%m-%Y')" >> $GITHUB_OUTPUT
+
+      - name: Créer Q5_archive_date.txt
+        run: |
+          NOMFICHIER="Q5_archive_${{ steps.date.outputs.date }}.txt"
+          echo "Antoine Paunet" > $NOMFICHIER
+          echo "" >> $NOMFICHIER
+          cat Q5.java >> $NOMFICHIER
+
+      - name: Commit et Push du .txt
+        run: |
+          NOMFICHIER="Q5_archive_${{ steps.date.outputs.date }}.txt"
+          git config --global user.name PAUNETantoine
+          git config user.email paunet.antoine@gmail.com
+          git pull
+          git add $NOMFICHIER
+          git commit -m "Ajout automatique de l’archive Q5.java"
+          git push
