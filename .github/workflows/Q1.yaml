@@ -1,0 +1,32 @@
+name: Question 1, ZIP et push du .txt
+
+on:
+  push:
+    branches:
+      - main
+permissions:
+    contents: write
+    
+jobs:
+  zip-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Cloner le dépôt
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          fetch-depth: 0
+
+      - name: Créer l’archive ZIP
+        run: |
+          zip -r Q1_archive_TOTO.txt.zip . -i "TOTO.txt"
+
+      - name: Commit et Push du .zip
+        run: |
+          git config --global user.name PAUNETantoine
+          git config user.email paunet.antoine@gmail.com
+
+          git add Q1_archive_TOTO.txt.zip
+          git commit -m "Ajout automatique de l’archive TOTO.txt"
+          git push
