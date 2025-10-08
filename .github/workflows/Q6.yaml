@@ -1,0 +1,58 @@
+name: Q6
+
+on:
+  push:
+    branches:
+      - main
+permissions:
+    contents: write
+
+jobs:
+  archive-java-Q6:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Récupérer la date
+        id: date
+        run: echo "date=$(date +'%d-%m-%Y-%H%M%S')" >> $GITHUB_OUTPUT
+
+      - name: Créer Q6_archive_date.txt avec infos
+        run: |
+          NOMFICHIER="Q6_archive_${{ steps.date.outputs.date }}.txt"
+          echo "Antoine Paunet" > $NOMFICHIER
+          echo "" >> $NOMFICHIER
+          cat Q6.java >> $NOMFICHIER
+          echo "" >> $NOMFICHIER
+          echo "Nb caractères :" >> $NOMFICHIER
+          wc Q6.java >> $NOMFICHIER
+
+      - name: Chercher le précédent Q6_archive_date.txt
+        id: prev
+        run: |
+          ls -t Q6_archive_*.txt | sed -n '2p' > prevfile.txt
+          if [ -s prevfile.txt ]; then
+            echo "prevfile=$(cat prevfile.txt)" >> $GITHUB_OUTPUT
+          else
+            echo "prevfile=" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Créer Q6_différences.txt
+        run: |
+          NEWFILE="Q6_archive_${{ steps.date.outputs.date }}.txt"
+          PREVFILE="${{ steps.prev.outputs.prevfile }}"
+          if [ -n "$PREVFILE" ]; then
+            diff "$PREVFILE" "$NEWFILE" > Q6_différences.txt || true
+          else
+            echo "Le fichier n'existe pas" > Q6_différences.txt
+          fi
+
+      - name: Commit et Push des fichiers
+        run: |
+          git config --global user.name PAUNETantoine
+          git config user.email paunet.antoine@gmail.com
+          git pull
+          git add $NOMFICHIER
+          git commit -m "Ajout Q6_archive et Q6_différences"
+          git push
