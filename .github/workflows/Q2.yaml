@@ -1,0 +1,38 @@
+name: Archive Info
+
+on:
+  push:
+    branches:
+      - main
+permissions:
+    contents: write
+
+jobs:
+  creer-archive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Creer info.txt
+        run: |
+          echo "Nom: PAUNET" > info.txt
+          echo "Prénom: ANTOINE" >> info.txt
+          echo "Date et heure: $(date '+%Y-%m-%d %H:%M:%S')" >> info.txt
+          echo "Contenu de TOTO.txt:" >> info.txt
+          cat TOTO.txt >> info.txt
+          echo "" >> info.txt
+          echo "Taille de TOTO.txt: $(stat --format=%s TOTO.txt) octets" >> info.txt
+
+      - name: Create archive
+        run: |
+          zip Q2_archive_TOTO.txt info.txt
+
+      - name: Commit et Push du .zip
+        run: |
+          git config --global user.name PAUNETantoine
+          git config user.email paunet.antoine@gmail.com
+
+          git add Q2_archive_TOTO.txt.zip
+          git commit -m "Ajout automatique de l’archive info.txt"
+          git push
